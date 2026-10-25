@@ -1,5 +1,5 @@
 pkgname=metroid-prime-port-bin
-pkgver=0.22.0
+pkgver=0.33.0
 pkgrel=1
 pkgdesc="Native Linux port of Metroid Prime"
 arch=('x86_64')
@@ -10,28 +10,28 @@ source=(
     "https://raw.githubusercontent.com/Odrannnn/MetroidPrimePort/v${pkgver}/packaging/io.github.odrannnn.metroidprimeport.desktop"
     "https://raw.githubusercontent.com/Odrannnn/MetroidPrimePort/v${pkgver}/packaging/metroid_prime_port.png"
 )
-sha256sums=('6b50bb5691297a6cc3b3805ce57fad4f2a81eba3dc3db283546938a74791866b'
+sha256sums=('45efb319fc5b4be19398333065cb9a1e6d4855e0448f80202ad360b566debcbd'
             '6ad8e78e4dfc27cd5aec8082de65166fbf8cfbd6e9580dfd7eb47ac514f7cd51'
             '3350d8fb6a19d38b5ef6c9835829ee5f12783c8030563d5fda7d6dca0e7313a8')
 
 package() {
+    # Binary
     install -Dm755 \
         "metroid-prime-port-linux-x86_64/metroid_prime_port" \
         "$pkgdir/usr/bin/metroid_prime_port"
 
-    install -Dm644 \
-        "metroid-prime-port-linux-x86_64/share/licenses/metroid-prime-port/LICENSE" \
-        "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
-    install -Dm644 \
-        "metroid-prime-port-linux-x86_64/share/licenses/metroid-prime-port/NOTICE" \
-        "$pkgdir/usr/share/licenses/$pkgname/NOTICE"
+    # All license / notice files (structure changed in 0.31.0)
+    install -dm755 "$pkgdir/usr/share/licenses/$pkgname"
+    cp -a "metroid-prime-port-linux-x86_64/share/licenses/metroid-prime-port/." \
+          "$pkgdir/usr/share/licenses/$pkgname/"
+
+    # Desktop entry
     install -Dm644 \
         "$srcdir/io.github.odrannnn.metroidprimeport.desktop" \
         "$pkgdir/usr/share/applications/io.github.odrannnn.metroidprimeport.desktop"
 
+    # Icon
     install -Dm644 \
         "$srcdir/metroid_prime_port.png" \
         "$pkgdir/usr/share/icons/hicolor/256x256/apps/io.github.odrannnn.metroidprimeport.png"
 }
-
-
